@@ -14,11 +14,16 @@ type TCP struct {
 	addr   string
 	dialer proxy.Dialer
 	proxy  proxy.Proxy
+	scheme string
 }
 
 func init() {
 	proxy.RegisterDialer("tcp", NewTCPDialer)
 	proxy.RegisterServer("tcp", NewTCPServer)
+	proxy.RegisterDialer("tcp4", NewTCPDialer)
+	proxy.RegisterServer("tcp4", NewTCPServer)
+	proxy.RegisterDialer("tcp6", NewTCPDialer)
+	proxy.RegisterServer("tcp6", NewTCPServer)
 }
 
 // NewTCP returns a tcp struct.
@@ -33,6 +38,7 @@ func NewTCP(s string, d proxy.Dialer, p proxy.Proxy) (*TCP, error) {
 		dialer: d,
 		proxy:  p,
 		addr:   u.Host,
+		scheme: u.Scheme,
 	}
 
 	return t, nil
@@ -50,19 +56,19 @@ func NewTCPServer(s string, p proxy.Proxy) (proxy.Server, error) {
 
 // ListenAndServe listens on server's addr and serves connections.
 func (s *TCP) ListenAndServe() {
-	l, err := net.Listen("tcp", s.addr)
+	l, err := net.Listen(s.scheme, s.addr)
 	if err != nil {
-		log.F("[tcp] failed to listen on %s: %v", s.addr, err)
+		log.F("[%s] failed to listen on %s: %v", s.scheme, s.addr, err)
 		return
 	}
 	defer l.Close()
 
-	log.F("[tcp] listening TCP on %s", s.addr)
+	log.F("[%s] listening TCP on %s", s.scheme, s.addr)
 
 	for {
 		c, err := l.Accept()
 		if err != nil {
-			log.F("[tcp] failed to accept: %v", err)
+			log.F("[%s] failed to accept: %v", s.scheme, err)
 			continue
 		}
 

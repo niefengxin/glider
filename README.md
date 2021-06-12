@@ -15,11 +15,12 @@ we can set up local listeners as proxy servers, and forward requests to internet
 ```
 
 ## Features
+
 - Act as both proxy client and proxy server(protocol converter)
 - Flexible proxy & protocol chains
 - Load balancing with the following scheduling algorithm:
   - rr: round robin
-  - ha: high availability 
+  - ha: high availability
   - lha: latency based high availability
   - dh: destination hashing
 - Rule & priority based forwarder choosing: [Config Examples](config/examples)
@@ -36,7 +37,7 @@ we can set up local listeners as proxy servers, and forward requests to internet
 - Serve http and socks5 on the same port
 - Periodical availability checking for forwarders
 - Send requests from specific local ip/interface
-- Services: 
+- Services:
   - dhcpd: a simple dhcp server that can detect existing dhcp server and avoid conflicts
 
 ## Protocols
@@ -44,46 +45,49 @@ we can set up local listeners as proxy servers, and forward requests to internet
 <details>
 <summary>click to see details</summary>
 
-|Protocol     | Listen/TCP |  Listen/UDP | Forward/TCP | Forward/UDP | Description
-|:-:          |:-:|:-:|:-:|:-:|:-
-|Mixed        |√|√| | |http+socks5 server
-|HTTP         |√| |√| |client & server
-|SOCKS5       |√|√|√|√|client & server
-|SS           |√|√|√|√|client & server
-|Trojan       |√|√|√|√|client & server
-|Trojanc      |√|√|√|√|trojan cleartext(without tls)
-|VLESS        |√|√|√|√|client & server
-|VMess        | | |√|√|client only
-|SSR          | | |√| |client only
-|SSH          | | |√| |client only
-|SOCKS4       | | |√| |client only
-|SOCKS4A      | | |√| |client only
-|TCP          |√| |√| |tcp tunnel client & server
-|UDP          | |√| |√|udp tunnel client & server
-|TLS          |√| |√| |transport client & server
-|KCP          | |√|√| |transport client & server
-|Unix         |√|√|√|√|transport client & server
-|Smux         |√| |√| |transport client & server
-|Websocket    |√| |√| |transport client & server
-|Simple-Obfs  | | |√| |transport client only
-|Redir        |√| | | |linux only
-|Redir6       |√| | | |linux only(ipv6)
-|Reject       | | |√|√|reject all requests
+|  Protocol   | Listen/TCP | Listen/UDP | Forward/TCP | Forward/UDP | Description                   |
+| :---------: | :--------: | :--------: | :---------: | :---------: | :---------------------------- |
+|    Mixed    |     √      |     √      |             |             | http+socks5 server            |
+|    HTTP     |     √      |            |      √      |             | client & server               |
+|   SOCKS5    |     √      |     √      |      √      |      √      | client & server               |
+|     SS      |     √      |     √      |      √      |      √      | client & server               |
+|   Trojan    |     √      |     √      |      √      |      √      | client & server               |
+|   Trojanc   |     √      |     √      |      √      |      √      | trojan cleartext(without tls) |
+|    VLESS    |     √      |     √      |      √      |      √      | client & server               |
+|    VMess    |            |            |      √      |      √      | client only                   |
+|     SSR     |            |            |      √      |             | client only                   |
+|     SSH     |            |            |      √      |             | client only                   |
+|   SOCKS4    |            |            |      √      |             | client only                   |
+|   SOCKS4A   |            |            |      √      |             | client only                   |
+|     TCP     |     √      |            |      √      |             | tcp tunnel client & server    |
+|     UDP     |            |     √      |             |      √      | udp tunnel client & server    |
+|     TLS     |     √      |            |      √      |             | transport client & server     |
+|     KCP     |            |     √      |      √      |             | transport client & server     |
+|    Unix     |     √      |     √      |      √      |      √      | transport client & server     |
+|    Smux     |     √      |            |      √      |             | transport client & server     |
+|  Websocket  |     √      |            |      √      |             | transport client & server     |
+| Simple-Obfs |            |            |      √      |             | transport client only         |
+|    Redir    |     √      |            |             |             | linux only                    |
+|   Redir6    |     √      |            |             |             | linux only(ipv6)              |
+|   Reject    |            |            |      √      |      √      | reject all requests           |
 
 </details>
 
 ## Install
 
 Download:
+
 - [https://github.com/nadoo/glider/releases](https://github.com/nadoo/glider/releases)
 
 Docker:
+
 ```bash
 docker pull nadoo/glider
 #docker pull ghcr.io/nadoo/glider
 ```
 
 ArchLinux:
+
 ```bash
 sudo pacman -S glider
 ```
@@ -93,6 +97,7 @@ sudo pacman -S glider
 ```bash
 glider -h
 ```
+
 <details>
 <summary>click to see details</summary>
 
@@ -158,9 +163,11 @@ glider 0.14.0 usage:
 </details>
 
 run:
+
 ```bash
 glider -config CONFIGPATH
 ```
+
 ```bash
 glider -verbose -listen :8443 -forward SCHEME://HOST:PORT
 ```
@@ -172,7 +179,7 @@ glider -verbose -listen :8443 -forward SCHEME://HOST:PORT
 
 ```bash
 Available schemes:
-  listen: mixed ss socks5 http vless trojan trojanc redir redir6 tcp udp tls ws unix smux kcp
+  listen: mixed ss socks5 http vless trojan trojanc redir redir6 tcp tcp4 tcp6 udp tls ws unix smux kcp
   forward: reject ss socks4 socks5 http ssr ssh vless vmess trojan trojanc tcp udp tls ws unix smux kcp simple-obfs
 
 Socks5 scheme:
@@ -360,7 +367,7 @@ Examples:
 
 ## Service
 
-- dhcpd: 
+- dhcpd:
   - service=dhcpd,INTERFACE,START_IP,END_IP
   - e.g., service=dhcpd,eth1,192.168.50.100,192.168.50.199
 
@@ -372,26 +379,29 @@ Examples:
 
 <details><summary>You can customize and build glider if you want a smaller binary (click to see details)</summary>
 
-
 1. Clone the source code:
-  ```bash
-  git clone https://github.com/nadoo/glider && cd glider
-  ```
+
+```bash
+git clone https://github.com/nadoo/glider && cd glider
+```
+
 2. Customize features:
 
-  ```bash
-  open `feature.go` & `feature_linux.go`, comment out the packages you don't need
-  // _ "github.com/nadoo/glider/proxy/kcp"
-  ```
+```bash
+open `feature.go` & `feature_linux.go`, comment out the packages you don't need
+// _ "github.com/nadoo/glider/proxy/kcp"
+```
 
 3. Build it(requires **Go 1.16+** )
-  ```bash
-  go build -v -ldflags "-s -w"
-  ```
+
+```bash
+go build -v -ldflags "-s -w"
+```
 
   </details>
 
 ## Proxy & Protocol Chains
+
 <details><summary>In glider, you can easily chain several proxy servers or protocols together (click to see details)</summary>
 
 - Chain proxy servers:
@@ -414,19 +424,19 @@ Examples:
 
 - Chain protocols and servers:
 
-  ``` bash
+  ```bash
   forward=socks5://1.1.1.1:1080,tls://server.com:443,vmess://5a146038-0b56-4e95-b1dc-5c6f5a32cd98@?alterID=2
   ```
 
 - Chain protocols in listener: https proxy server
 
-  ``` bash
+  ```bash
   listen=tls://:443?cert=crtFilePath&key=keyFilePath,http://
   ```
 
 - Chain protocols in listener: http over smux over websocket proxy server
 
-  ``` bash
+  ```bash
   listen=ws://:10000,smux://,http://
   ```
 
